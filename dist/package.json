@@ -1,6 +1,6 @@
 {
   "name": "@creativeacer/spnamevalidator",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "SPNameValidator",
   "license": "MIT",
   "keywords": [
@@ -9,5 +9,9 @@
     "SharePoint 2016",
     "validation",
     "SharePoint Online"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CreativeAcer/spnamevalidator.git"
+  }
 }
