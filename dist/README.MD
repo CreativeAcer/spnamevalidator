@@ -3,6 +3,9 @@
 This validator will help you validate names for SharePoint 2013/2016 or SharePoint Online.
 The validation can be used for Lib/list names and file names.
 
+The purpose of this library is to check field inputs by users.
+For example if a form is used to create a new list / listItem / ... this code will check if the input is valid for the selected sharepoint version.
+
 # # # Instalation
 ```bash
     npm i @creativeacer/spnamevalidator
