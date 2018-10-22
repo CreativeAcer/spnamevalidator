@@ -9,6 +9,7 @@ export enum Platform {
 export enum ValidationType {
   'File - Folder',
   'ListName',
+  'Custom'
 }
 
 interface ISPNameValidator {
@@ -17,6 +18,8 @@ interface ISPNameValidator {
 
 export default class SPNameValidator implements ISPNameValidator {
   private platform: Platform;
+  private illegalCustomChars: string[] = [];
+  private illegalCustomWords: string[] = [];
 
   constructor(platform: Platform) {
     this.platform = platform;
@@ -25,6 +28,17 @@ export default class SPNameValidator implements ISPNameValidator {
   public checkName(name: string, type: ValidationType): boolean {
     return this.ContainsIllegalCharOrWord(name, type);
   }
+
+  public checkCustomValue(name: string): boolean {
+    return this.ContainsIllegalCharOrWord(name, ValidationType.Custom);
+  }
+
+  public setIllegalCharset(chars: string[] = []): void {
+    this.illegalCustomChars = chars;
+  };
+  public setIllegalWordset(words: string[] = []): void {
+    this.illegalCustomWords = words;
+  };
 
   private ContainsIllegalCharOrWord(
     value: string,
@@ -118,6 +132,9 @@ export default class SPNameValidator implements ISPNameValidator {
               ]
             : ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|'];
         break;
+      case ValidationType.Custom:
+        illegalCharacters = this.illegalCustomChars;
+        break;
     }
     return illegalCharacters;
   }
@@ -181,6 +198,9 @@ export default class SPNameValidator implements ISPNameValidator {
           'LPT8',
           'LPT9',
         ];
+        break;
+      case ValidationType.Custom:
+        illegalWords = this.illegalCustomWords;
         break;
     }
     return illegalWords;
