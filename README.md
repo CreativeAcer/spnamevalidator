@@ -27,7 +27,7 @@ choose your SharePoint version
     or
     let spNameValidator = new SPNameValidator(Platform["SharePoint Online"]);
 ```
-
+#### Using checkName function!
 perform a check on a name / entry 
 ```bash
     this.spNameValidator.checkName(string, ValidationType["File - Folder"]);
@@ -49,9 +49,13 @@ If you would like to use a custom character or wordset you can do this by settin
     // Set the characters and words
     this.customSPNameValidator.setIllegalCharset(['a', '#', '7']);
     this.customSPNameValidator.setIllegalWordset(['One', 'Work', 'Just']);
+```
 
+#### Using checkCustomValue function!
+```bash
     this.spNameValidator.checkCustomValue(string);
 ```
+
 
 When the string is valid true will be returned.
 
