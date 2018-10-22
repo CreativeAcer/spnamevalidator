@@ -1,6 +1,6 @@
 {
   "name": "@creativeacer/spnamevalidator",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "SPNameValidator",
   "license": "MIT",
   "keywords": [
@@ -8,7 +8,9 @@
     "SharePoint 2013",
     "SharePoint 2016",
     "validation",
-    "SharePoint Online"
+    "SharePoint Online",
+    "Custom",
+    "Custom Validation"
   ],
   "repository": {
     "type": "git",
