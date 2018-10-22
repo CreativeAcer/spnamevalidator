@@ -1,6 +1,3 @@
-// import { Platform, ValidationType } from './enums/enums';
-// import { ISPNameValidator } from './interfaces/ISPNameValidator';
-
 export enum Platform {
   'SharePoint 2013 - 2016',
   'SharePoint Online',
