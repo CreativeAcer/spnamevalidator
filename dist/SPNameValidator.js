@@ -32,7 +32,7 @@ var SPNameValidator = /** @class */ (function () {
     ;
     SPNameValidator.prototype.setIllegalWordset = function (words) {
         if (words === void 0) { words = []; }
-        this.illegalCustomWords = words;
+        this.illegalCustomWords = words.map(function (x) { return x.toUpperCase(); });
     };
     ;
     SPNameValidator.prototype.ContainsIllegalCharOrWord = function (value, type) {
@@ -186,7 +186,7 @@ var SPNameValidator = /** @class */ (function () {
                 ];
                 break;
             case ValidationType.Custom:
-                illegalWords = this.illegalCustomWords.map(function (x) { return x.toUpperCase(); });
+                illegalWords = this.illegalCustomWords;
                 break;
         }
         return illegalWords;

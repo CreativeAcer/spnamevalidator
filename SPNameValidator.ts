@@ -37,7 +37,7 @@ export default class SPNameValidator implements ISPNameValidator {
     this.illegalCustomChars = chars;
   };
   public setIllegalWordset(words: string[] = []): void {
-    this.illegalCustomWords = words;
+    this.illegalCustomWords = words.map((x) => x.toUpperCase());
   };
 
   private ContainsIllegalCharOrWord(
@@ -200,7 +200,7 @@ export default class SPNameValidator implements ISPNameValidator {
         ];
         break;
       case ValidationType.Custom:
-        illegalWords = this.illegalCustomWords.map((x) => x.toUpperCase());
+        illegalWords = this.illegalCustomWords;
         break;
     }
     return illegalWords;
