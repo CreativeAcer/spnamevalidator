@@ -1,6 +1,4 @@
 "use strict";
-// import { Platform, ValidationType } from './enums/enums';
-// import { ISPNameValidator } from './interfaces/ISPNameValidator';
 exports.__esModule = true;
 var Platform;
 (function (Platform) {
