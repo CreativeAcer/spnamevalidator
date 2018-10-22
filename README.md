@@ -51,6 +51,11 @@ If you would like to use a custom character or wordset you can do this by settin
     this.customSPNameValidator.setIllegalWordset(['One', 'Work', 'Just']);
 ```
 
+Characters are Case sensitive!
+during validation: w !== W
+words will be transformerd to uppercase
+during validation: Word === WORD
+
 #### Using checkCustomValue function!
 ```bash
     this.spNameValidator.checkCustomValue(string);
