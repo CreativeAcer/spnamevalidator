@@ -45,7 +45,7 @@ export default class SPNameValidator implements ISPNameValidator {
     type: ValidationType
   ): boolean {
     const len: number = value ? value.length : 0;
-    let matches: boolean = len >= 1 && len <= 254 && !value.startsWith(' ');
+    let matches: boolean = len >= 1 && len <= 128 && !value.startsWith(' ') && !value.startsWith('~$');
     const charset: string[] = this.illegalCharList(type);
     const wordset: string[] = this.illegalWordList(type);
 
@@ -57,14 +57,18 @@ export default class SPNameValidator implements ISPNameValidator {
         }
       }
       if (matches) {
-        const findWord = wordset.indexOf(value.toUpperCase());
-        switch (findWord) {
-          case -1:
-            matches = true;
-            break;
-          default:
-            matches = wordset[findWord].length !== value.length ? true : false;
-            break;
+        if(value.toUpperCase().indexOf('_VTI_') === -1) {
+          const findWord = wordset.indexOf(value.toUpperCase());
+          switch (findWord) {
+            case -1:
+              matches = true;
+              break;
+            default:
+              matches = wordset[findWord].length !== value.length ? true : false;
+              break;
+          }
+        }else {
+          matches = false;
         }
       }
     }
@@ -168,7 +172,7 @@ export default class SPNameValidator implements ISPNameValidator {
           'LPT6',
           'LPT7',
           'LPT8',
-          'LPT9',
+          'LPT9'
         ];
         break;
       case ValidationType.ListName:
@@ -196,7 +200,7 @@ export default class SPNameValidator implements ISPNameValidator {
           'LPT6',
           'LPT7',
           'LPT8',
-          'LPT9',
+          'LPT9'
         ];
         break;
       case ValidationType.Custom:

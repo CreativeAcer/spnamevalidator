@@ -37,7 +37,7 @@ var SPNameValidator = /** @class */ (function () {
     ;
     SPNameValidator.prototype.ContainsIllegalCharOrWord = function (value, type) {
         var len = value ? value.length : 0;
-        var matches = len >= 1 && len <= 254 && !value.startsWith(' ');
+        var matches = len >= 1 && len <= 128 && !value.startsWith(' ') && !value.startsWith('~$');
         var charset = this.illegalCharList(type);
         var wordset = this.illegalWordList(type);
         if (matches) {
@@ -48,14 +48,19 @@ var SPNameValidator = /** @class */ (function () {
                 }
             }
             if (matches) {
-                var findWord = wordset.indexOf(value.toUpperCase());
-                switch (findWord) {
-                    case -1:
-                        matches = true;
-                        break;
-                    default:
-                        matches = wordset[findWord].length !== value.length ? true : false;
-                        break;
+                if (value.toUpperCase().indexOf('_VTI_') === -1) {
+                    var findWord = wordset.indexOf(value.toUpperCase());
+                    switch (findWord) {
+                        case -1:
+                            matches = true;
+                            break;
+                        default:
+                            matches = wordset[findWord].length !== value.length ? true : false;
+                            break;
+                    }
+                }
+                else {
+                    matches = false;
                 }
             }
         }
@@ -154,7 +159,7 @@ var SPNameValidator = /** @class */ (function () {
                     'LPT6',
                     'LPT7',
                     'LPT8',
-                    'LPT9',
+                    'LPT9'
                 ];
                 break;
             case ValidationType.ListName:
@@ -182,7 +187,7 @@ var SPNameValidator = /** @class */ (function () {
                     'LPT6',
                     'LPT7',
                     'LPT8',
-                    'LPT9',
+                    'LPT9'
                 ];
                 break;
             case ValidationType.Custom:
