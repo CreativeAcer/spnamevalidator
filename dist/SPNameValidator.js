@@ -11,14 +11,30 @@ var ValidationType;
 (function (ValidationType) {
     ValidationType[ValidationType["File - Folder"] = 0] = "File - Folder";
     ValidationType[ValidationType["ListName"] = 1] = "ListName";
+    ValidationType[ValidationType["Custom"] = 2] = "Custom";
 })(ValidationType = exports.ValidationType || (exports.ValidationType = {}));
 var SPNameValidator = /** @class */ (function () {
     function SPNameValidator(platform) {
+        this.illegalCustomChars = [];
+        this.illegalCustomWords = [];
         this.platform = platform;
     }
     SPNameValidator.prototype.checkName = function (name, type) {
         return this.ContainsIllegalCharOrWord(name, type);
     };
+    SPNameValidator.prototype.checkCustomValue = function (name) {
+        return this.ContainsIllegalCharOrWord(name, ValidationType.Custom);
+    };
+    SPNameValidator.prototype.setIllegalCharset = function (chars) {
+        if (chars === void 0) { chars = []; }
+        this.illegalCustomChars = chars;
+    };
+    ;
+    SPNameValidator.prototype.setIllegalWordset = function (words) {
+        if (words === void 0) { words = []; }
+        this.illegalCustomWords = words;
+    };
+    ;
     SPNameValidator.prototype.ContainsIllegalCharOrWord = function (value, type) {
         var len = value ? value.length : 0;
         var matches = len >= 1 && len <= 254 && !value.startsWith(' ');
@@ -104,6 +120,9 @@ var SPNameValidator = /** @class */ (function () {
                         ]
                         : ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|'];
                 break;
+            case ValidationType.Custom:
+                illegalCharacters = this.illegalCustomChars;
+                break;
         }
         return illegalCharacters;
     };
@@ -165,6 +184,9 @@ var SPNameValidator = /** @class */ (function () {
                     'LPT8',
                     'LPT9',
                 ];
+                break;
+            case ValidationType.Custom:
+                illegalWords = this.illegalCustomWords;
                 break;
         }
         return illegalWords;
