@@ -33,6 +33,8 @@ perform a check on a name / entry
     this.spNameValidator.checkName(string, ValidationType["File - Folder"]);
     or
     this.spNameValidator.checkName(string, ValidationType["ListName"]);
+    // ValidationType["Custom"] is only used for custom characters and words
+
 ```
 
 When the string is valid true will be returned.
@@ -57,6 +59,7 @@ during validation: Word === WORD
 
 #### Using checkCustomValue function!
 ```bash
+    // ValidationType["Custom"] will be automatically selected
     this.spNameValidator.checkCustomValue(string);
 ```
 
