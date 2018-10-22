@@ -186,7 +186,7 @@ var SPNameValidator = /** @class */ (function () {
                 ];
                 break;
             case ValidationType.Custom:
-                illegalWords = this.illegalCustomWords;
+                illegalWords = this.illegalCustomWords.map(function (x) { return x.toUpperCase(); });
                 break;
         }
         return illegalWords;

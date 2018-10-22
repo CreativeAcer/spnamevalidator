@@ -200,7 +200,7 @@ export default class SPNameValidator implements ISPNameValidator {
         ];
         break;
       case ValidationType.Custom:
-        illegalWords = this.illegalCustomWords;
+        illegalWords = this.illegalCustomWords.map((x) => x.toUpperCase());
         break;
     }
     return illegalWords;
