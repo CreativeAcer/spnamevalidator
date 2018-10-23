@@ -1,4 +1,4 @@
-## SPNameValidator  ![](https://img.shields.io/badge/Build-passing-brightgreen.svg)
+## SPNameValidator  ![](https://img.shields.io/badge/Build-passing-brightgreen.svg)  ![](https://img.shields.io/badge/coverage-98%25-brightgreen.svg)
 
 This validator will help you validate names for SharePoint 2013/2016 or SharePoint Online.
 The validation can be used for Lib/list names and file names.
