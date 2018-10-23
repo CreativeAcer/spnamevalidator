@@ -1,0 +1,8 @@
+{
+    "name": "@creativeacer/spnamevalidator",
+    "description": "SPNameValidator",
+    "license": "MIT",
+    "scripts": {
+      "build": "tsc SPNameValidator.ts"
+    }
+  }

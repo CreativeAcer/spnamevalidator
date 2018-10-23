@@ -34,6 +34,7 @@ perform a check on a name / entry
     or
     this.spNameValidator.checkName(string, ValidationType["ListName"]);
     // ValidationType["Custom"] is only used for custom characters and words
+
 ```
 
 When the string is valid true will be returned.
@@ -51,7 +52,6 @@ If you would like to use a custom character or wordset you can do this by settin
     this.customSPNameValidator.setIllegalCharset(['a', '#', '7']);
     this.customSPNameValidator.setIllegalWordset(['One', 'Work', 'Just']);
 ```
-
 Characters are Case sensitive!
 during validation: w !== W
 words will be transformerd to uppercase
