@@ -9,7 +9,7 @@ For example if a form is used to create a new list / listItem / ... this code wi
 #### Donations
 If you would like to donate anything, you can always use the following link. Much appreciated! ;)
 
-[![Donate](https://img.shields.io/badge/Donate-paypal-brightgreen.svg)](./paypal.me/creativeacer)
+[![Donate](https://img.shields.io/badge/Donate-paypal-brightgreen.svg)](https://paypal.me/creativeacer)
 
 
 ### Instalation
