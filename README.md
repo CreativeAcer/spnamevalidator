@@ -6,6 +6,12 @@ The validation can be used for Lib/list names and file names.
 The purpose of this library is to check field inputs by users.
 For example if a form is used to create a new list / listItem / ... this code will check if the input is valid for the selected sharepoint version.
 
+#### Donations
+If you would like to donate anything, you can always use the following link. Much appreciated! ;)
+
+[![Donate](https://img.shields.io/badge/Donate-paypal-brightgreen.svg)](paypal.me/creativeacer)
+
+
 ### Instalation
 ```bash
     npm i @creativeacer/spnamevalidator
