@@ -1,4 +1,4 @@
-## SPNameValidator
+## SPNameValidator  ![CreativeAcer ()](https://img.shields.io/badge/Build-passing-brightgreen.svg)
 
 This validator will help you validate names for SharePoint 2013/2016 or SharePoint Online.
 The validation can be used for Lib/list names and file names.
@@ -9,7 +9,7 @@ For example if a form is used to create a new list / listItem / ... this code wi
 #### Donations
 If you would like to donate anything, you can always use the following link. Much appreciated! ;)
 
-[![Donate](https://img.shields.io/badge/Donate-paypal-brightgreen.svg)](https://paypal.me/creativeacer)
+[![Donate](https://img.shields.io/badge/Donate-paypal-green.svg)](https://paypal.me/creativeacer)
 
 
 ### Instalation
