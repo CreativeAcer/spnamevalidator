@@ -9,78 +9,166 @@ var ValidationType;
 (function (ValidationType) {
     ValidationType[ValidationType["File - Folder"] = 0] = "File - Folder";
     ValidationType[ValidationType["ListName"] = 1] = "ListName";
-    ValidationType[ValidationType["Custom"] = 2] = "Custom";
 })(ValidationType = exports.ValidationType || (exports.ValidationType = {}));
 var SPNameValidator = (function () {
     function SPNameValidator(platform) {
+        this.charsetMerge = {
+            'File - Folder': [],
+            'ListName': []
+        };
+        this.wordMerge = {
+            'File - Folder': [],
+            'ListName': []
+        };
         this.platform = platform;
         this.illegalCustomChars = [];
         this.illegalCustomWords = [];
     }
     SPNameValidator.prototype.checkName = function (name, type) {
-        return this.ContainsIllegalCharOrWord(name, type);
+        return this.ContainsIllegalCharOrWord(name, type, false, true);
     };
-    SPNameValidator.prototype.checkCustomValue = function (name) {
-        return this.ContainsIllegalCharOrWord(name, ValidationType.Custom);
+    SPNameValidator.prototype.checkCustomValue = function (name, type, includeSPIllegal) {
+        if (includeSPIllegal === void 0) { includeSPIllegal = false; }
+        return this.ContainsIllegalCharOrWord(name, type, true, includeSPIllegal);
     };
     SPNameValidator.prototype.setIllegalCharset = function (chars) {
         if (chars === void 0) { chars = []; }
         this.illegalCustomChars = chars;
+        this.charsetMerge['File - Folder'] = this.merge(this.illegalCharList(ValidationType['File - Folder']), this.illegalCustomChars);
+        this.charsetMerge.ListName = this.merge(this.illegalCharList(ValidationType['ListName']), this.illegalCustomChars);
     };
     ;
     SPNameValidator.prototype.setIllegalWordset = function (words) {
         if (words === void 0) { words = []; }
         this.illegalCustomWords = words.map(function (x) { return x.toUpperCase(); });
+        this.wordMerge['File - Folder'] = this.merge(this.illegalWordList(ValidationType['File - Folder']), this.illegalCustomWords);
+        this.wordMerge.ListName = this.merge(this.illegalWordList(ValidationType['ListName']), this.illegalCustomWords);
     };
     ;
-    SPNameValidator.prototype.ContainsIllegalCharOrWord = function (value, type) {
-        var len = value ? value.length : 0;
-        var matches = len >= 1 && len <= 128 && !value.startsWith(' ') && !value.startsWith('~$');
-        var charset = this.illegalCharList(type);
-        var wordset = this.illegalWordList(type);
-        if (matches) {
-            for (var i = 0; i < len; i++) {
-                matches = this.MatchASCII(charset, value[i]);
-                if (!matches) {
-                    return false;
-                }
+    SPNameValidator.prototype.ContainsIllegalCharOrWord = function (value, type, custom, includeDefault) {
+        var charset = [];
+        var wordset = [];
+        if (custom && !includeDefault) {
+            charset = this.illegalCustomChars;
+            wordset = this.illegalCustomWords;
+        }
+        else if (custom && includeDefault) {
+            if (type === ValidationType["File - Folder"]) {
+                charset = this.charsetMerge['File - Folder'];
+                wordset = this.wordMerge['File - Folder'];
             }
-            if (matches) {
-                if (value.toUpperCase().indexOf('_VTI_') === -1) {
-                    var findWord = wordset.indexOf(value.toUpperCase());
-                    switch (findWord) {
-                        case -1:
-                            matches = true;
-                            break;
-                        default:
-                            matches = wordset[findWord].length !== value.length ? true : false;
-                            break;
+            else {
+                charset = this.charsetMerge['ListName'];
+                wordset = this.wordMerge['ListName'];
+            }
+        }
+        else {
+            charset = this.illegalCharList(type);
+            wordset = this.illegalWordList(type);
+        }
+        var len = value ? value.length : 0;
+        var valid = len >= 1 && len <= 128;
+        if (valid) {
+            valid = this.forbiddenStart(value, includeDefault);
+            if (valid) {
+                valid = this.forbiddenContain(value, charset);
+                if (valid) {
+                    valid = this.forbiddenEnd(value, includeDefault);
+                    if (valid) {
+                        var findWord = wordset.indexOf(value.toUpperCase());
+                        switch (findWord) {
+                            case -1:
+                                valid = true;
+                                break;
+                            default:
+                                valid = wordset[findWord].length !== value.length ? true : false;
+                                break;
+                        }
                     }
                 }
-                else {
-                    matches = false;
-                }
             }
         }
-        return matches;
+        return valid;
     };
-    SPNameValidator.prototype.MatchASCII = function (charset, char) {
-        var match = true;
-        if (match) {
-            match = charset.indexOf(char) === -1;
-            if (!match) {
-                return false;
+    SPNameValidator.prototype.merge = function (a1, a2) {
+        var hash = {};
+        var arr = [];
+        for (var i = 0; i < a1.length; i++) {
+            if (hash[a1[i]] !== true) {
+                hash[a1[i]] = true;
+                arr[arr.length] = a1[i];
             }
         }
-        return match;
+        for (var i = 0; i < a2.length; i++) {
+            if (hash[a2[i]] !== true) {
+                hash[a2[i]] = true;
+                arr[arr.length] = a2[i];
+            }
+        }
+        return arr;
+    };
+    SPNameValidator.prototype.forbiddenStart = function (value, includeDefault) {
+        if (includeDefault) {
+            var illegalEndings = [
+                ' ',
+                '_',
+                '.'
+            ];
+            return !!!illegalEndings.find(function (el) {
+                return value.startsWith(el);
+            });
+        }
+        else {
+            return true;
+        }
+    };
+    SPNameValidator.prototype.forbiddenContain = function (value, charset) {
+        return !!!charset.find(function (el) {
+            return value.includes(el);
+        });
+    };
+    SPNameValidator.prototype.forbiddenEnd = function (value, includeDefault) {
+        if (includeDefault) {
+            var illegalEndings = [
+                '.files',
+                '_files',
+                '-Dateien',
+                '_fichiers',
+                '_bestanden',
+                '_file',
+                '_archivos',
+                '-filer',
+                '_tiedostot',
+                '_pliki',
+                '_soubory',
+                '_elemei',
+                '_ficheiros',
+                '_arquivos',
+                '_dosyalar',
+                '_datoteke',
+                '_fitxers',
+                '_failid',
+                '_fails',
+                '_bylos',
+                '_fajlovi',
+                '_fitxategiak',
+                '.'
+            ];
+            return !!!illegalEndings.find(function (el) {
+                return value.endsWith(el);
+            });
+        }
+        else {
+            return true;
+        }
     };
     SPNameValidator.prototype.illegalCharList = function (type) {
         var illegalCharacters = [];
         switch (type) {
             case ValidationType['File - Folder']:
                 illegalCharacters =
-                    this.platform === Platform['SharePoint 2013 - 2016']
-                        ? [
+                    this.platform === Platform['SharePoint 2013 - 2016'] ?
+                        [
                             '~',
                             '"',
                             '#',
@@ -97,13 +185,13 @@ var SPNameValidator = (function () {
                             '|',
                             '}',
                             '.',
-                        ]
-                        : ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|'];
+                        ] :
+                        ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
                 break;
             case ValidationType.ListName:
                 illegalCharacters =
-                    this.platform === Platform['SharePoint 2013 - 2016']
-                        ? [
+                    this.platform === Platform['SharePoint 2013 - 2016'] ?
+                        [
                             '~',
                             '"',
                             '#',
@@ -120,11 +208,8 @@ var SPNameValidator = (function () {
                             '|',
                             '}',
                             '.',
-                        ]
-                        : ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|'];
-                break;
-            case ValidationType.Custom:
-                illegalCharacters = this.illegalCustomChars;
+                        ] :
+                        ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
                 break;
         }
         return illegalCharacters;
@@ -157,7 +242,8 @@ var SPNameValidator = (function () {
                     'LPT6',
                     'LPT7',
                     'LPT8',
-                    'LPT9'
+                    'LPT9',
+                    '_VTI_'
                 ];
                 break;
             case ValidationType.ListName:
@@ -185,11 +271,9 @@ var SPNameValidator = (function () {
                     'LPT6',
                     'LPT7',
                     'LPT8',
-                    'LPT9'
+                    'LPT9',
+                    '_VTI_'
                 ];
-                break;
-            case ValidationType.Custom:
-                illegalWords = this.illegalCustomWords;
                 break;
         }
         return illegalWords;
