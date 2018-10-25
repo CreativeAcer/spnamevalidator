@@ -1,6 +1,6 @@
 {
   "name": "@creativeacer/spnamevalidator",
-  "version": "8.0.6",
+  "version": "8.0.7",
   "description": "SharePoint - Custom Input Validator",
   "license": "MIT",
   "scripts": {
@@ -21,6 +21,7 @@
     "type": "git",
     "url": "https://github.com/CreativeAcer/spnamevalidator.git"
   },
+  "homepage": "https://creativeacer.github.io/spnamevalidator/",
   "devDependencies": {
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.0",
