@@ -29,9 +29,16 @@ If you would like to donate anything, you can always use the following link. Muc
 
 ### Usage
 
-include the libary
+include the libary  
+TS
 ```bash
     import SPNameValidator, { Platform, ValidationType } from '@creativeacer/spnamevalidator/SPNameValidator';
+```
+JS  
+```bash
+    var SPNameValidator = require('@creativeacer/spnamevalidator/SPNameValidator').default;
+    var Platform = require('@creativeacer/spnamevalidator/SPNameValidator').Platform;
+    var ValidationType = require('@creativeacer/spnamevalidator/SPNameValidator').ValidationType;
 ```
 
 #### Standard SharePoint illegal char and word list
@@ -91,6 +98,22 @@ add true as third parameter
 
 
 When the string is valid true will be returned.
+
+#### Example test for Runkit
+```bash
+    var SPNameValidator = require('@creativeacer/spnamevalidator/SPNameValidator').default;
+    var Platform = require('@creativeacer/spnamevalidator/SPNameValidator').Platform;
+    var ValidationType = require('@creativeacer/spnamevalidator/SPNameValidator').ValidationType;
+
+    var validator = new SPNameValidator(Platform['SharePoint 2013 - 2016']);
+    // should return false
+    var result = validator.checkName('_test', ValidationType['File - Folder']);
+    console.log('_test ' + result);
+    // should return true
+    var result = validator.checkName('test', ValidationType['File - Folder']);
+    console.log('test ' + result);
+```
+
 
 
 Happy coding!
