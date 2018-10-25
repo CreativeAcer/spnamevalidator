@@ -9,8 +9,7 @@ var ValidationType = require('../SPNameValidator').ValidationType;
 
 // ValidationType
 // '0': 'File - Folder',
-// '1': 'ListName',
-// '2': 'Custom'
+// '1': 'ListName'
 
 
 describe('SharePoint 2013-2016 tests', function () {

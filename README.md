@@ -11,7 +11,7 @@ DEFAULT - The validator uses the characters and words defined by microsoft as be
 
 CUSTOM - Next to those you also have the option to set custom characters and words.  
 
-BOTH - You als ohave the option to validate the input on both custom and default characters and words.  
+BOTH - You also have the option to validate the input on both custom and default characters and words.  
 
 I will refer to DEFAULT - CUSTOM - BOTH in the instructions  
 
@@ -44,8 +44,8 @@ choose your SharePoint version
 ```
 
 #### Using checkName function!
-perform a check on a name / entry 
-DEFAULT 
+DEFAULT - perform a check on a name / entry 
+
 ```bash
     this.spNameValidator.checkName(string, ValidationType["File - Folder"]);
     or

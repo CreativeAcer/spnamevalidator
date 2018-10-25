@@ -1,6 +1,6 @@
 {
   "name": "@creativeacer/spnamevalidator",
-  "version": "8.0.3",
+  "version": "8.0.4",
   "description": "SharePoint - Custom Input Validator",
   "license": "MIT",
   "scripts": {
