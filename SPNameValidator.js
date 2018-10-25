@@ -114,7 +114,7 @@ var SPNameValidator = (function () {
                 '_',
                 '.'
             ];
-            return !!!illegalEndings.find(function (el) {
+            return !illegalEndings.find(function (el) {
                 return value.startsWith(el);
             });
         }
@@ -123,7 +123,7 @@ var SPNameValidator = (function () {
         }
     };
     SPNameValidator.prototype.forbiddenContain = function (value, charset) {
-        return !!!charset.find(function (el) {
+        return !charset.find(function (el) {
             return value.includes(el);
         });
     };
@@ -154,7 +154,7 @@ var SPNameValidator = (function () {
                 '_fitxategiak',
                 '.'
             ];
-            return !!!illegalEndings.find(function (el) {
+            return !illegalEndings.find(function (el) {
                 return value.endsWith(el);
             });
         }
@@ -164,116 +164,29 @@ var SPNameValidator = (function () {
     };
     SPNameValidator.prototype.illegalCharList = function (type) {
         var illegalCharacters = [];
+        var illegal1316Char = ['~', '"', '#', '%', '&', '*', ':', '<', '>', '?', '/', '\\', '{', '|', '}', '.'];
+        var illegalOnlineChar = ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
         switch (type) {
             case ValidationType['File - Folder']:
                 illegalCharacters =
-                    this.platform === Platform['SharePoint 2013 - 2016'] ?
-                        [
-                            '~',
-                            '"',
-                            '#',
-                            '%',
-                            '&',
-                            '*',
-                            ':',
-                            '<',
-                            '>',
-                            '?',
-                            '/',
-                            '\\',
-                            '{',
-                            '|',
-                            '}',
-                            '.',
-                        ] :
-                        ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
+                    this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
                 break;
             case ValidationType.ListName:
                 illegalCharacters =
-                    this.platform === Platform['SharePoint 2013 - 2016'] ?
-                        [
-                            '~',
-                            '"',
-                            '#',
-                            '%',
-                            '&',
-                            '*',
-                            ':',
-                            '<',
-                            '>',
-                            '?',
-                            '/',
-                            '\\',
-                            '{',
-                            '|',
-                            '}',
-                            '.',
-                        ] :
-                        ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
+                    this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
                 break;
         }
         return illegalCharacters;
     };
     SPNameValidator.prototype.illegalWordList = function (type) {
         var illegalWords = [];
+        var defaultIllegalWords = ['AUX', 'PRN', 'NUL', 'CON', 'COM0', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT0', 'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9', '_VTI_'];
         switch (type) {
             case ValidationType['File - Folder']:
-                illegalWords = [
-                    'AUX',
-                    'PRN',
-                    'NUL',
-                    'CON',
-                    'COM0',
-                    'COM1',
-                    'COM2',
-                    'COM3',
-                    'COM4',
-                    'COM5',
-                    'COM6',
-                    'COM7',
-                    'COM8',
-                    'COM9',
-                    'LPT0',
-                    'LPT1',
-                    'LPT2',
-                    'LPT3',
-                    'LPT4',
-                    'LPT5',
-                    'LPT6',
-                    'LPT7',
-                    'LPT8',
-                    'LPT9',
-                    '_VTI_'
-                ];
+                illegalWords = defaultIllegalWords;
                 break;
             case ValidationType.ListName:
-                illegalWords = [
-                    'AUX',
-                    'PRN',
-                    'NUL',
-                    'CON',
-                    'COM0',
-                    'COM1',
-                    'COM2',
-                    'COM3',
-                    'COM4',
-                    'COM5',
-                    'COM6',
-                    'COM7',
-                    'COM8',
-                    'COM9',
-                    'LPT0',
-                    'LPT1',
-                    'LPT2',
-                    'LPT3',
-                    'LPT4',
-                    'LPT5',
-                    'LPT6',
-                    'LPT7',
-                    'LPT8',
-                    'LPT9',
-                    '_VTI_'
-                ];
+                illegalWords = defaultIllegalWords;
                 break;
         }
         return illegalWords;
