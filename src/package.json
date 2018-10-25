@@ -1,6 +1,6 @@
 {
     "name": "@creativeacer/spnamevalidator",
-    "description": "SPNameValidator",
+    "description": "SharePoint - Custom Input Validator",
     "license": "MIT",
     "scripts": {
       "build": "tsc SPNameValidator.ts"
