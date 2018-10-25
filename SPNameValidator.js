@@ -53,7 +53,7 @@ var SPNameValidator = (function () {
             wordset = this.illegalCustomWords;
         }
         else if (custom && includeDefault) {
-            if (type === ValidationType["File - Folder"]) {
+            if (type === ValidationType['File - Folder']) {
                 charset = this.charsetMerge['File - Folder'];
                 wordset = this.wordMerge['File - Folder'];
             }

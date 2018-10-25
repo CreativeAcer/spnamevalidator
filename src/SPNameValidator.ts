@@ -46,7 +46,6 @@ export default class SPNameValidator implements ISPNameValidator {
   public checkCustomValue(name: string, type: ValidationType, includeSPIllegal: boolean = false): boolean {
     return this.ContainsIllegalCharOrWord(name, type, true, includeSPIllegal);
   }
-
   // pre merge default with custom for performance
   public setIllegalCharset(chars: string[] = []): void {
     this.illegalCustomChars = chars;
@@ -58,7 +57,6 @@ export default class SPNameValidator implements ISPNameValidator {
     this.wordMerge['File - Folder'] = this.merge(this.illegalWordList(ValidationType['File - Folder']), this.illegalCustomWords);
     this.wordMerge.ListName = this.merge(this.illegalWordList(ValidationType['ListName']), this.illegalCustomWords);
   };
-
   private ContainsIllegalCharOrWord(
     value: string,
     type: ValidationType,
