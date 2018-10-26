@@ -21,7 +21,7 @@ If you would like to donate anything, you can always use the following link. Muc
 [![Donate](https://img.shields.io/badge/Donate-paypal-green.svg)](https://paypal.me/creativeacer)
 
 
-### Instalation
+### Installation
 ```bash
     npm i @creativeacer/spnamevalidator
 ```
