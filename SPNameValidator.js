@@ -68,26 +68,8 @@ var SPNameValidator = (function () {
         }
         var len = value ? value.length : 0;
         var valid = len >= 1 && len <= 128;
-        if (valid) {
-            valid = this.forbiddenStart(value, includeDefault);
-            if (valid) {
-                valid = this.forbiddenContain(value, charset);
-                if (valid) {
-                    valid = this.forbiddenEnd(value, includeDefault);
-                    if (valid) {
-                        var findWord = wordset.indexOf(value.toUpperCase());
-                        switch (findWord) {
-                            case -1:
-                                valid = true;
-                                break;
-                            default:
-                                valid = wordset[findWord].length !== value.length ? true : false;
-                                break;
-                        }
-                    }
-                }
-            }
-        }
+        if (valid)
+            valid = (this.forbiddenStart(value, includeDefault) && this.forbiddenContain(value, charset) && this.forbiddenEnd(value, includeDefault) && this.forbiddenWord(value, wordset));
         return valid;
     };
     SPNameValidator.prototype.merge = function (a1, a2) {
@@ -161,6 +143,19 @@ var SPNameValidator = (function () {
         else {
             return true;
         }
+    };
+    SPNameValidator.prototype.forbiddenWord = function (value, wordset) {
+        var returnValue;
+        var findWord = wordset.indexOf(value.toUpperCase());
+        switch (findWord) {
+            case -1:
+                returnValue = true;
+                break;
+            default:
+                returnValue = wordset[findWord].length !== value.length ? true : false;
+                break;
+        }
+        return returnValue;
     };
     SPNameValidator.prototype.illegalCharList = function (type) {
         var illegalCharacters = [];
