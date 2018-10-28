@@ -91,26 +91,9 @@ export default class SPNameValidator implements ISPNameValidator {
     let valid: boolean = len >= 1 && len <= 128;
 
     // value can not start or end or contain certain reserved characters
-    if (valid) {
-      valid = this.forbiddenStart(value, includeDefault);
-      if (valid) {
-        valid = this.forbiddenContain(value, charset);
-        if (valid) {
-          valid = this.forbiddenEnd(value, includeDefault);
-          if (valid) {
-            let findWord = wordset.indexOf(value.toUpperCase());
-            switch (findWord) {
-              case -1:
-                valid = true;
-                break;
-              default:
-                valid = wordset[findWord].length !== value.length ? true : false;
-                break;
-            }
-          }
-        }
-      }
-    }
+    if (valid)
+      valid = (this.forbiddenStart(value, includeDefault) && this.forbiddenContain(value, charset) && this.forbiddenEnd(value, includeDefault) && this.forbiddenWord(value, wordset));
+
     return valid;
   }
 
@@ -192,11 +175,25 @@ export default class SPNameValidator implements ISPNameValidator {
 
   }
 
+  private forbiddenWord(value: string, wordset: string[]): boolean {
+    let returnValue: boolean;
+    let findWord = wordset.indexOf(value.toUpperCase());
+    switch (findWord) {
+      case -1:
+        returnValue = true;
+        break;
+      default:
+        returnValue = wordset[findWord].length !== value.length ? true : false;
+        break;
+    }
+    return returnValue;
+  }
+
   private illegalCharList(type: ValidationType): string[] {
     let illegalCharacters: string[] = [];
 
-    const illegal1316Char: string [] = ['~','"','#','%','&','*',':','<','>','?','/','\\','{','|','}','.'];
-    const illegalOnlineChar: string [] = ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
+    const illegal1316Char: string[] = ['~', '"', '#', '%', '&', '*', ':', '<', '>', '?', '/', '\\', '{', '|', '}', '.'];
+    const illegalOnlineChar: string[] = ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
     switch (type) {
       case ValidationType['File - Folder']:
         illegalCharacters =
@@ -213,8 +210,8 @@ export default class SPNameValidator implements ISPNameValidator {
   private illegalWordList(type: ValidationType): string[] {
     // Still the same at this point
     let illegalWords: string[] = [];
-    const defaultIllegalWords: string[] = ['AUX','PRN','NUL','CON','COM0','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','LPT0','LPT1','LPT2','LPT3','LPT4','LPT5','LPT6','LPT7','LPT8','LPT9','_VTI_'];
-  
+    const defaultIllegalWords: string[] = ['AUX', 'PRN', 'NUL', 'CON', 'COM0', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT0', 'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9', '_VTI_'];
+
     switch (type) {
       case ValidationType['File - Folder']:
         illegalWords = defaultIllegalWords;
