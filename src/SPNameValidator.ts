@@ -5,7 +5,8 @@ export enum Platform {
 
 export enum ValidationType {
   'File - Folder',
-  'ListName'
+  'ListName',
+  'Site'
 }
 
 interface ISPNameValidator {
@@ -16,6 +17,7 @@ interface ISPNameValidator {
 interface MergedData {
   'File - Folder': string[];
   'ListName': string[];
+  'Site': string[];
 }
 
 export default class SPNameValidator implements ISPNameValidator {
@@ -25,12 +27,14 @@ export default class SPNameValidator implements ISPNameValidator {
 
   private charsetMerge: MergedData = {
     'File - Folder': [],
-    'ListName': []
+    'ListName': [],
+    'Site': []
   }
 
   private wordMerge: MergedData = {
     'File - Folder': [],
-    'ListName': []
+    'ListName': [],
+    'Site': []
   }
 
   constructor(platform: Platform) {
@@ -51,11 +55,13 @@ export default class SPNameValidator implements ISPNameValidator {
     this.illegalCustomChars = chars;
     this.charsetMerge['File - Folder'] = this.merge(this.illegalCharList(ValidationType['File - Folder']), this.illegalCustomChars);
     this.charsetMerge.ListName = this.merge(this.illegalCharList(ValidationType['ListName']), this.illegalCustomChars);
+    this.charsetMerge.Site = this.merge(this.illegalCharList(ValidationType['Site']), this.illegalCustomChars);
   };
   public setIllegalWordset(words: string[] = []): void {
     this.illegalCustomWords = words.map((x) => x.toUpperCase());
     this.wordMerge['File - Folder'] = this.merge(this.illegalWordList(ValidationType['File - Folder']), this.illegalCustomWords);
     this.wordMerge.ListName = this.merge(this.illegalWordList(ValidationType['ListName']), this.illegalCustomWords);
+    this.wordMerge.Site = this.merge(this.illegalWordList(ValidationType['Site']), this.illegalCustomWords);
   };
   private ContainsIllegalCharOrWord(
     value: string,
@@ -75,9 +81,12 @@ export default class SPNameValidator implements ISPNameValidator {
       if (type === ValidationType['File - Folder']) {
         charset = this.charsetMerge['File - Folder'];
         wordset = this.wordMerge['File - Folder'];
-      } else {
+      } else if(type === ValidationType.ListName) {
         charset = this.charsetMerge['ListName'];
         wordset = this.wordMerge['ListName'];
+      }else {
+        charset = this.charsetMerge['Site'];
+        wordset = this.wordMerge['Site'];
       }
     } else {
       //  not custom
@@ -91,26 +100,9 @@ export default class SPNameValidator implements ISPNameValidator {
     let valid: boolean = len >= 1 && len <= 128;
 
     // value can not start or end or contain certain reserved characters
-    if (valid) {
-      valid = this.forbiddenStart(value, includeDefault);
-      if (valid) {
-        valid = this.forbiddenContain(value, charset);
-        if (valid) {
-          valid = this.forbiddenEnd(value, includeDefault);
-          if (valid) {
-            let findWord = wordset.indexOf(value.toUpperCase());
-            switch (findWord) {
-              case -1:
-                valid = true;
-                break;
-              default:
-                valid = wordset[findWord].length !== value.length ? true : false;
-                break;
-            }
-          }
-        }
-      }
-    }
+    if (valid)
+      valid = (this.forbiddenStart(value, includeDefault) && this.forbiddenContain(value, charset) && this.forbiddenEnd(value, includeDefault) && this.forbiddenWord(value, wordset));
+
     return valid;
   }
 
@@ -192,17 +184,35 @@ export default class SPNameValidator implements ISPNameValidator {
 
   }
 
+  private forbiddenWord(value: string, wordset: string[]): boolean {
+    let returnValue: boolean;
+    let findWord = wordset.indexOf(value.toUpperCase());
+    switch (findWord) {
+      case -1:
+        returnValue = true;
+        break;
+      default:
+        returnValue = wordset[findWord].length !== value.length ? true : false;
+        break;
+    }
+    return returnValue;
+  }
+
   private illegalCharList(type: ValidationType): string[] {
     let illegalCharacters: string[] = [];
 
-    const illegal1316Char: string [] = ['~','"','#','%','&','*',':','<','>','?','/','\\','{','|','}','.'];
-    const illegalOnlineChar: string [] = ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
+    const illegal1316Char: string[] = ['~', '"', '#', '%', '&', '*', ':', '<', '>', '?', '/', '\\', '{', '|', '}', '.'];
+    const illegalOnlineChar: string[] = ['~', '"', '*', ':', '<', '>', '?', '/', '\\', '|', '..'];
     switch (type) {
       case ValidationType['File - Folder']:
         illegalCharacters =
           this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
         break;
       case ValidationType.ListName:
+        illegalCharacters =
+          this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
+        break;
+      case ValidationType.Site:
         illegalCharacters =
           this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
         break;
@@ -213,13 +223,15 @@ export default class SPNameValidator implements ISPNameValidator {
   private illegalWordList(type: ValidationType): string[] {
     // Still the same at this point
     let illegalWords: string[] = [];
-    const defaultIllegalWords: string[] = ['AUX','PRN','NUL','CON','COM0','COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9','LPT0','LPT1','LPT2','LPT3','LPT4','LPT5','LPT6','LPT7','LPT8','LPT9','_VTI_'];
-  
+    const defaultIllegalWords: string[] = ['AUX', 'PRN', 'NUL', 'CON', 'COM0', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT0', 'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5', 'LPT6', 'LPT7', 'LPT8', 'LPT9', '_VTI_'];
+
     switch (type) {
       case ValidationType['File - Folder']:
         illegalWords = defaultIllegalWords;
         break;
       case ValidationType.ListName:
+        illegalWords = defaultIllegalWords;
+      case ValidationType.Site:
         illegalWords = defaultIllegalWords;
         break;
     }
