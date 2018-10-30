@@ -5,7 +5,8 @@ export enum Platform {
 
 export enum ValidationType {
   'File - Folder',
-  'ListName'
+  'ListName',
+  'Site'
 }
 
 interface ISPNameValidator {
@@ -16,6 +17,7 @@ interface ISPNameValidator {
 interface MergedData {
   'File - Folder': string[];
   'ListName': string[];
+  'Site': string[];
 }
 
 export default class SPNameValidator implements ISPNameValidator {
@@ -25,12 +27,14 @@ export default class SPNameValidator implements ISPNameValidator {
 
   private charsetMerge: MergedData = {
     'File - Folder': [],
-    'ListName': []
+    'ListName': [],
+    'Site': []
   }
 
   private wordMerge: MergedData = {
     'File - Folder': [],
-    'ListName': []
+    'ListName': [],
+    'Site': []
   }
 
   constructor(platform: Platform) {
@@ -51,11 +55,13 @@ export default class SPNameValidator implements ISPNameValidator {
     this.illegalCustomChars = chars;
     this.charsetMerge['File - Folder'] = this.merge(this.illegalCharList(ValidationType['File - Folder']), this.illegalCustomChars);
     this.charsetMerge.ListName = this.merge(this.illegalCharList(ValidationType['ListName']), this.illegalCustomChars);
+    this.charsetMerge.Site = this.merge(this.illegalCharList(ValidationType['Site']), this.illegalCustomChars);
   };
   public setIllegalWordset(words: string[] = []): void {
     this.illegalCustomWords = words.map((x) => x.toUpperCase());
     this.wordMerge['File - Folder'] = this.merge(this.illegalWordList(ValidationType['File - Folder']), this.illegalCustomWords);
     this.wordMerge.ListName = this.merge(this.illegalWordList(ValidationType['ListName']), this.illegalCustomWords);
+    this.wordMerge.Site = this.merge(this.illegalWordList(ValidationType['Site']), this.illegalCustomWords);
   };
   private ContainsIllegalCharOrWord(
     value: string,
@@ -75,9 +81,12 @@ export default class SPNameValidator implements ISPNameValidator {
       if (type === ValidationType['File - Folder']) {
         charset = this.charsetMerge['File - Folder'];
         wordset = this.wordMerge['File - Folder'];
-      } else {
+      } else if(type === ValidationType.ListName) {
         charset = this.charsetMerge['ListName'];
         wordset = this.wordMerge['ListName'];
+      }else {
+        charset = this.charsetMerge['Site'];
+        wordset = this.wordMerge['Site'];
       }
     } else {
       //  not custom
@@ -203,6 +212,10 @@ export default class SPNameValidator implements ISPNameValidator {
         illegalCharacters =
           this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
         break;
+      case ValidationType.Site:
+        illegalCharacters =
+          this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
+        break;
     }
     return illegalCharacters;
   }
@@ -217,6 +230,8 @@ export default class SPNameValidator implements ISPNameValidator {
         illegalWords = defaultIllegalWords;
         break;
       case ValidationType.ListName:
+        illegalWords = defaultIllegalWords;
+      case ValidationType.Site:
         illegalWords = defaultIllegalWords;
         break;
     }

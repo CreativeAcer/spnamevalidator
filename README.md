@@ -1,12 +1,12 @@
 ## SPNameValidator  ![](https://img.shields.io/badge/Build-passing-brightgreen.svg)  ![](https://img.shields.io/badge/coverage-100%25-brightgreen.svg) [![CodeFactor](https://www.codefactor.io/repository/github/creativeacer/spnamevalidator/badge/master)](https://www.codefactor.io/repository/github/creativeacer/spnamevalidator/overview/master)
 
 This validator will help you validate names for SharePoint 2013/2016 or SharePoint Online.  
-The validation can be used for Lib/list names and file names.  
+The validation can be used for Lib/list names, file names and Site-Subsite names.  
 
 The purpose of this library is to check field inputs by users.  
 For example if a form is used to create a new list / listItem / ... this code will check if the input is valid for the selected sharepoint version.
 
-DEFAULT - The validator uses the characters and words defined by microsoft as being illegal for both File - Folder - Library - List   
+DEFAULT - The validator uses the characters and words defined by microsoft as being illegal for both File - Folder - Library - List - Site  
 [![Donate](https://img.shields.io/badge/Microsoft-Link-blue.svg)](https://support.office.com/en-us/article/Invalid-file-names-and-file-types-in-OneDrive-OneDrive-for-Business-and-SharePoint-64883a5d-228e-48f5-b3d2-eb39e07630fa)
 
 CUSTOM - Next to those you also have the option to set custom characters and words.  
@@ -57,6 +57,8 @@ DEFAULT - perform a check on a name / entry
     this.spNameValidator.checkName(string, ValidationType["File - Folder"]);
     or
     this.spNameValidator.checkName(string, ValidationType["ListName"]);
+    or
+    this.spNameValidator.checkName(string, ValidationType["Site"]);
 ```
 This check will use the Default microsoft characters and words
 When the string is valid true will be returned.
@@ -86,6 +88,8 @@ without the default microsoft defined char and words
     this.spNameValidator.checkCustomValue(string, ValidationType["File - Folder"]);
     or
     this.spNameValidator.checkCustomValue(string, ValidationType["ListName"]);
+    or
+    this.spNameValidator.checkCustomValue(string, ValidationType["Site"]);
 ```
 BOTH
 or with the default microsoft defined char and words -
@@ -94,6 +98,8 @@ add true as third parameter
     this.spNameValidator.checkCustomValue(string, ValidationType["File - Folder"], true);
     or
     this.spNameValidator.checkCustomValue(string, ValidationType["ListName"], true);
+    or
+    this.spNameValidator.checkCustomValue(string, ValidationType["Site"], true);
 ```
 
 

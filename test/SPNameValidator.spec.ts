@@ -96,6 +96,44 @@ describe('SharePoint 2013-2016 tests', function () {
       assert.equal(validator.checkName('dotend_arquivos', ValidationType['ListName']), false);
     });
   });
+  describe('Site tests', function () {
+    it('"_test" should return false', function () {
+      assert.equal(validator.checkName('_test', ValidationType['Site']), false);
+    });
+    it('"namingconventions" should return true', function () {
+      assert.equal(validator.checkName('namingconventions', ValidationType['Site']), true);
+    });
+    it('"~$aaaand" should return false', function () {
+      assert.equal(validator.checkName('~$aaaand', ValidationType['Site']), false);
+    });
+    it('"lol#zies" should return false', function () {
+      assert.equal(validator.checkName('lol#zies', ValidationType['Site']), false);
+    });
+    it('"NUL" should return false', function () {
+      assert.equal(validator.checkName('NUL', ValidationType['Site']), false);
+    });
+    it('"nul" should return false', function () {
+      assert.equal(validator.checkName('nul', ValidationType['Site']), false);
+    });
+    it('"starting with space" should return false', function () {
+      assert.equal(validator.checkName(' spacestart', ValidationType['Site']), false);
+    });
+    it('"M&M" should return false', function () {
+      assert.equal(validator.checkName('M&M', ValidationType['Site']), false);
+    });
+    it('"MandM" should return true', function () {
+      assert.equal(validator.checkName('MandM', ValidationType['Site']), true);
+    });
+    it('"json{}" should return false', function () {
+      assert.equal(validator.checkName('json{}', ValidationType['Site']), false);
+    });
+    it('"dot." should return false', function () {
+      assert.equal(validator.checkName('dot.', ValidationType['Site']), false);
+    });
+    it('"ending with _arquivos" should return false', function () {
+      assert.equal(validator.checkName('dotend_arquivos', ValidationType['Site']), false);
+    });
+  });
 });
 
 describe('SharePoint Online tests', function () {
@@ -179,6 +217,41 @@ describe('SharePoint Online tests', function () {
       assert.equal(validator.checkName('dotend_arquivos', ValidationType['ListName']), false);
     });
   });
+  describe('Site tests', function () {
+    it('"_test" should return false', function () {
+      assert.equal(validator.checkName('_test', ValidationType['Site']), false);
+    });
+    it('"namingconventions" should return true', function () {
+      assert.equal(validator.checkName('namingconventions', ValidationType['Site']), true);
+    });
+    it('"~$aaaand" should return false', function () {
+      assert.equal(validator.checkName('~$aaaand', ValidationType['Site']), false);
+    });
+    it('"lol#zies" should return true', function () {
+      assert.equal(validator.checkName('lol#zies', ValidationType['Site']), true);
+    });
+    it('"NUL" should return false', function () {
+      assert.equal(validator.checkName('NUL', ValidationType['Site']), false);
+    });
+    it('"nul" should return false', function () {
+      assert.equal(validator.checkName('nul', ValidationType['Site']), false);
+    });
+    it('"starting with space" should return false', function () {
+      assert.equal(validator.checkName(' spacestart', ValidationType['Site']), false);
+    });
+    it('"M&M" should return true', function () {
+      assert.equal(validator.checkName('M&M', ValidationType['Site']), true);
+    });
+    it('"MandM" should return true', function () {
+      assert.equal(validator.checkName('MandM', ValidationType['Site']), true);
+    });
+    it('"json{}" should return true', function () {
+      assert.equal(validator.checkName('json{}', ValidationType['Site']), true);
+    });
+    it('"ending with _arquivos" should return false', function () {
+      assert.equal(validator.checkName('dotend_arquivos', ValidationType['Site']), false);
+    });
+  });
 
 });
 
@@ -226,6 +299,30 @@ describe('Custom tests', function () {
     it('"json{}" should return true', function () {
       assert.equal(validator.checkCustomValue('json{}', ValidationType['ListName']), true);
     });
+    it('"ending with .files custom no default" should return true', function () {
+      assert.equal(validator.checkCustomValue('dotend.files', ValidationType['Site']), true);
+    });
+    it('"lol#zies" should return false', function () {
+      assert.equal(validator.checkCustomValue('lol#zies', ValidationType['Site']), false);
+    });
+    it('"NUL" should return true', function () {
+      assert.equal(validator.checkCustomValue('NUL', ValidationType['Site']), true);
+    });
+    it('"nul" should return true', function () {
+      assert.equal(validator.checkCustomValue('nul', ValidationType['Site']), true);
+    });
+    it('"starting with space" should return false', function () {
+      assert.equal(validator.checkCustomValue(' spacestart', ValidationType['Site']), false);
+    });
+    it('"M&M" should return true', function () {
+      assert.equal(validator.checkCustomValue('M&M', ValidationType['Site']), true);
+    });
+    it('"Illegal" should return false', function () {
+      assert.equal(validator.checkCustomValue('Illegal', ValidationType['Site']), false);
+    });
+    it('"json{}" should return true', function () {
+      assert.equal(validator.checkCustomValue('json{}', ValidationType['Site']), true);
+    });
   });
   describe('Custom tests with default illegal characters', function () {
     it('"_test" should return false', function () {
@@ -265,10 +362,34 @@ describe('Custom tests', function () {
       assert.equal(validator.checkCustomValue('M&M', ValidationType['ListName'], true), true);
     });
     it('"Illegal" should return false', function () {
-      assert.equal(validator.checkCustomValue('Illegal', ValidationType['ListName']), false);
+      assert.equal(validator.checkCustomValue('Illegal', ValidationType['ListName'], true), false);
     });
     it('"json{}" should return true', function () {
-      assert.equal(validator.checkCustomValue('json{}', ValidationType['ListName']), true);
+      assert.equal(validator.checkCustomValue('json{}', ValidationType['ListName'], true), true);
+    });
+    it('"NUL" should return false', function () {
+      assert.equal(validator.checkCustomValue('NUL', ValidationType['Site'], true), false);
+    });
+    it('"nul" should return false', function () {
+      assert.equal(validator.checkCustomValue('nul', ValidationType['Site'], true), false);
+    });
+    it('"starting with space" should return false', function () {
+      assert.equal(validator.checkCustomValue(' spacestart', ValidationType['Site'], true), false);
+    });
+    it('"ending with .files custom no default" should return false', function () {
+      assert.equal(validator.checkCustomValue('dotend.files', ValidationType['Site'], true), false);
+    });
+    it('"ending with _arquivos custom with default" should return false', function () {
+      assert.equal(validator.checkCustomValue('dotend_arquivos', ValidationType['Site'], true), false);
+    });
+    it('"M&M" should return true', function () {
+      assert.equal(validator.checkCustomValue('M&M', ValidationType['Site'], true), true);
+    });
+    it('"Illegal" should return false', function () {
+      assert.equal(validator.checkCustomValue('Illegal', ValidationType['Site'], true), false);
+    });
+    it('"json{}" should return true', function () {
+      assert.equal(validator.checkCustomValue('json{}', ValidationType['Site'], true), true);
     });
   });  
 });
