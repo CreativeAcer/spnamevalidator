@@ -9,16 +9,19 @@ var ValidationType;
 (function (ValidationType) {
     ValidationType[ValidationType["File - Folder"] = 0] = "File - Folder";
     ValidationType[ValidationType["ListName"] = 1] = "ListName";
+    ValidationType[ValidationType["Site"] = 2] = "Site";
 })(ValidationType = exports.ValidationType || (exports.ValidationType = {}));
 var SPNameValidator = (function () {
     function SPNameValidator(platform) {
         this.charsetMerge = {
             'File - Folder': [],
-            'ListName': []
+            'ListName': [],
+            'Site': []
         };
         this.wordMerge = {
             'File - Folder': [],
-            'ListName': []
+            'ListName': [],
+            'Site': []
         };
         this.platform = platform;
         this.illegalCustomChars = [];
@@ -36,6 +39,7 @@ var SPNameValidator = (function () {
         this.illegalCustomChars = chars;
         this.charsetMerge['File - Folder'] = this.merge(this.illegalCharList(ValidationType['File - Folder']), this.illegalCustomChars);
         this.charsetMerge.ListName = this.merge(this.illegalCharList(ValidationType['ListName']), this.illegalCustomChars);
+        this.charsetMerge.Site = this.merge(this.illegalCharList(ValidationType['Site']), this.illegalCustomChars);
     };
     ;
     SPNameValidator.prototype.setIllegalWordset = function (words) {
@@ -43,6 +47,7 @@ var SPNameValidator = (function () {
         this.illegalCustomWords = words.map(function (x) { return x.toUpperCase(); });
         this.wordMerge['File - Folder'] = this.merge(this.illegalWordList(ValidationType['File - Folder']), this.illegalCustomWords);
         this.wordMerge.ListName = this.merge(this.illegalWordList(ValidationType['ListName']), this.illegalCustomWords);
+        this.wordMerge.Site = this.merge(this.illegalWordList(ValidationType['Site']), this.illegalCustomWords);
     };
     ;
     SPNameValidator.prototype.ContainsIllegalCharOrWord = function (value, type, custom, includeDefault) {
@@ -57,9 +62,13 @@ var SPNameValidator = (function () {
                 charset = this.charsetMerge['File - Folder'];
                 wordset = this.wordMerge['File - Folder'];
             }
-            else {
+            else if (type === ValidationType.ListName) {
                 charset = this.charsetMerge['ListName'];
                 wordset = this.wordMerge['ListName'];
+            }
+            else {
+                charset = this.charsetMerge['Site'];
+                wordset = this.wordMerge['Site'];
             }
         }
         else {
@@ -170,6 +179,10 @@ var SPNameValidator = (function () {
                 illegalCharacters =
                     this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
                 break;
+            case ValidationType.Site:
+                illegalCharacters =
+                    this.platform === Platform['SharePoint 2013 - 2016'] ? illegal1316Char : illegalOnlineChar;
+                break;
         }
         return illegalCharacters;
     };
@@ -181,6 +194,8 @@ var SPNameValidator = (function () {
                 illegalWords = defaultIllegalWords;
                 break;
             case ValidationType.ListName:
+                illegalWords = defaultIllegalWords;
+            case ValidationType.Site:
                 illegalWords = defaultIllegalWords;
                 break;
         }
