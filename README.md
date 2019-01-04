@@ -18,7 +18,7 @@ I will refer to DEFAULT - CUSTOM - BOTH in the instructions
 #### Donations
 If you would like to donate anything, you can always use the following link. Much appreciated! ;)
 
-[![Donate](https://img.shields.io/badge/Donate-paypal-green.svg)](https://paypal.me/creativeacer)
+[![Donate](https://img.shields.io/badge/Donate-paypal-green.svg)](https://paypal.me/creativeacerm)
 
 
 ### Installation
