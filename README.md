@@ -1,7 +1,7 @@
 ## SPNameValidator  ![](https://img.shields.io/badge/Build-passing-brightgreen.svg)  ![](https://img.shields.io/badge/coverage-100%25-brightgreen.svg) [![CodeFactor](https://www.codefactor.io/repository/github/creativeacer/spnamevalidator/badge/master)](https://www.codefactor.io/repository/github/creativeacer/spnamevalidator/overview/master) [![npm version](https://badge.fury.io/js/%40creativeacer%2Fspnamevalidator.svg)](https://badge.fury.io/js/%40creativeacer%2Fspnamevalidator)
 
 This validator will help you validate names for SharePoint 2013/2016 or SharePoint Online.  
-The validation can be used for Lib/list names, file names and Site-Subsite names.  
+The validation can be used for library/list names, file names and Site-Subsite names.  
 
 The purpose of this library is to check field inputs by users.  
 For example if a form is used to create a new list / listItem / ... this code will check if the input is valid for the selected sharepoint version.
